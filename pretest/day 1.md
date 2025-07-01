@@ -178,7 +178,7 @@ println("Halo $nama")
 ```
 
 Jawaban:
-val nama: "lelz"
+val nama= "lelz"
 println("Halo: $nama")
 
 
