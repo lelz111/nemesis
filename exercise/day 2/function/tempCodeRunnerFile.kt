@@ -1,0 +1,2 @@
+
+    val op = readLine()?:""
