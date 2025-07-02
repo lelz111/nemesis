@@ -38,10 +38,30 @@ fun main(){
                 }
             }
             3 -> {
-                println("ini menu 3")
+                if(dataNilai.isEmpty()){
+                    println("Tidak ada data nilai")
+                }else{
+                    for ((nama, nilaiList) in dataNilai){
+                        val nt = nilaiList.maxOrNull()
+
+                        println("Nama: $nama")
+                        println("Nilai: $nilaiList")
+                        println("Nilai Tertinggi: $nt")
+                    }
+                }
             }
             4 -> {
-                println("ini menu 4")
+                if(dataNilai.isEmpty()){
+                    println("Tidak ada data nilai")
+                }else {
+                    println("Siswa yang lulus (rata-rata ≥ 75):")
+                    for ((nama, nilaiList) in dataNilai) {
+                        val rata2 = hitungRataRata(nilaiList)
+                        if (rata2 >= 75) {
+                            println("- $nama (Rata-rata: %.2f)".format(rata2))
+                        }
+                    }
+                }
             }
             5 -> {
                 println("Program akan berhenti")
