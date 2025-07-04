@@ -6,6 +6,7 @@ a. OkHttp
 b. Volley
 c. Retrofit
 d. Alamofire
+Jawaban: C
 
 ---
 
@@ -15,6 +16,7 @@ a. Menyimpan data pengguna
 b. Mengirim form ke server
 c. Mengirim permintaan HTTP GET ke endpoint `users`
 d. Menghapus pengguna dari server
+Jawaban: C
 
 ---
 
@@ -24,6 +26,7 @@ a. Untuk mempermudah syntax Kotlin
 b. Untuk menjaga agar UI tidak macet saat HTTP call
 c. Agar data disimpan ke SharedPreferences
 d. Agar aplikasi bisa offline
+Jawaban: B
 
 ---
 
@@ -33,6 +36,7 @@ a. JsonParser
 b. GsonConverterFactory
 c. JSONTokener
 d. JSONBuilder
+Jawaban: B
 
 ---
 
@@ -42,6 +46,7 @@ a. Mengatur authentication
 b. Menentukan response type
 c. Menentukan endpoint utama API
 d. Menentukan ukuran file
+Jawaban: C
 
 ---
 
@@ -51,6 +56,7 @@ a. Saat upload file
 b. Saat mengirim body JSON
 c. Saat menambahkan parameter URL
 d. Saat menyimpan token
+Jawaban: C
 
 ---
 
@@ -60,6 +66,7 @@ a. API berhasil dipanggil
 b. Status HTTP adalah 200
 c. Response tidak sesuai format
 d. Retrofit tidak digunakan
+Jawaban: C
 
 ---
 
@@ -69,6 +76,7 @@ a. @GET
 b. @POST
 c. @PUT
 d. @FETCH
+Jawaban: B
 
 ---
 
@@ -78,6 +86,7 @@ a. Program tetap jalan
 b. Data akan disimpan sebagai string
 c. Retrofit akan error saat parsing
 d. File JSON akan corrupt
+Jawaban: C
 
 ---
 
@@ -87,48 +96,49 @@ a. `.execute()`
 b. `.enqueue()`
 c. `.get()`
 d. `.await()`
+Jawaban: B
 
 ---
 ```
 
 #### 11. Jelaskan perbedaan antara Retrofit dan OkHttp dalam arsitektur Android.
-
+Jawaban: 
 ---
 
 #### 12. Sebutkan dua cara menangani response API di Retrofit!
-
+Jawaban: menggunakan suspend dan enqueue
 ---
 
 #### 13. Bagaimana cara mengecek apakah response dari server berhasil atau tidak?
-
+Jawaban: dari function onSuccess/onFailure
 ---
 
 #### 14. Apa fungsi `@Header("Authorization")` dalam Retrofit?
-
+Jawaban: untuk mengauthorize request
 ---
 
 #### 15. Apa itu suspend function dan mengapa sering digunakan bersama Retrofit?
-
+Jawaban: salah satu cara untuk menangani response dari API untuk mengsuspend 
 ---
 
 #### 16. Sebutkan satu contoh kasus nyata di mana HTTP client dibutuhkan dalam aplikasi Android.
-
+Jawaban: pada saat aplikasi ingin mengambil data dari API 
 ---
 
 #### 17. Jika API kamu lambat dan pengguna harus menunggu lama, bagaimana solusi teknisnya?
-
+Jawaban: menggunakan asynchronus sehingga bisa memunculkan seperti icon loading pada saat masih proses ambil data
 ---
 
 #### 18. Bagaimana cara menangani `TimeoutException` saat HTTP call?
-
+Jawaban: menggunakan try catch
 ---
 
 #### 19. Mengapa penting untuk menangani error code seperti 401 atau 500?
-
+Jawaban: Agar user tau error disebabkan oleh apa, dan aplikasi dapat berjalan dengan lancar lagi
 ---
 
 #### 20. Apa itu DTO dalam konteks komunikasi dengan API?
-
+Jawaban: Data Transfer Object digunakan sebagai perantara untuk menyederhanakan parameter/request selain yang diminta saja, jadi DTO akan mengirimkan data seminimal mungkin
 ---
 
 ### 🛠️ ** FIX CODE **
@@ -141,6 +151,12 @@ interface ApiService {
     fun getUser(): Call<User>
 }
 ```
+Jawaban: 
+```kotlin
+interface ApiService {
+    @GET("User")
+    fun getUser(): Call<User>
+}
 
 ---
 
@@ -152,7 +168,14 @@ val retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory)
     .build()
 ```
+Jawaban:
 
+```kotlin
+val retrofit = Retrofit.Builder()
+    .baseUrl("https://api.example.com")
+    .addConverterFactory(GsonConverterFactory.create())
+    .build()
+```
 ---
 
 #### 23. Diberikan JSON seperti ini:
@@ -175,16 +198,28 @@ data class User(
     val fullName: String
 )
 ```
-
+jawaban: 
+```kotlin
+data class User(
+    val id: Int,
+    val name: String
+)
+```
 ---
 
 #### 24. Lengkapi kode Retrofit untuk mengirim data JSON:
 
 ```kotlin
 @POST("user/add")
-fun createUser(@Body user: ???): Call<User>
+fun createUser(@Body user: User): Call<User>
 ```
+Jawaban: 
 
+```kotlin
+@Headers("Content-Type: application/json")
+@POST("user/add")
+fun createUser(@Body user: User): Call<User>
+```
 ---
 
 #### 25. Perbaiki fungsi berikut agar memanggil API secara asynchronous:
@@ -193,7 +228,15 @@ fun createUser(@Body user: ???): Call<User>
 val call = apiService.getUser()
 val result = call.execute()
 ```
+Jawaban:
+```kotlin
+val call = apiService.getUser()
+call.enqueue(....){
+    ...
+}
 
+val result = call.execute()
+---
 ---
 
 #### 26. Perbaiki parameter Retrofit berikut agar bisa mengirim `id` lewat query:
@@ -201,6 +244,11 @@ val result = call.execute()
 ```kotlin
 @GET("user")
 fun getUser(@Param("id") id: Int): Call<User>
+```
+Jawaban:
+```kotlin
+@GET("user")
+fun getUser(@Query("id") id: Int): Call<User>
 ```
 
 ---
@@ -210,6 +258,11 @@ fun getUser(@Param("id") id: Int): Call<User>
 ```kotlin
 @GET("user")
 fun getUser(): Call<User>
+```
+Jawaban:
+```kotlin
+@GET("user")
+fun getUser(): Call<User> Response<User>
 ```
 
 ---
@@ -221,6 +274,19 @@ val user = api.getUser()
 user.enqueue(object: ??? {
     override fun onResponse(...) {
         // handle
+    }
+})
+```
+Jawaban:
+
+```kotlin
+val user = api.getUser()
+user.enqueue(object: ??? {
+    override fun onResponse(...) {
+        // handle
+    }
+    override fun onFailure(...){
+        //handle
     }
 })
 ```
@@ -238,6 +304,19 @@ call.enqueue(object: Callback<User> {
     }
 })
 ```
+Jawaban:
+
+```kotlin
+val call = api.getUser()
+call.enqueue(object: Callback<User> {
+    override fun onFailure(call: Call<User>, t: Throwable) {
+        //handle
+     }
+    override fun onResponse(call: Call<User>, response: Response<User>) {
+        // handle success
+    }
+})
+```
 
 ---
 
@@ -247,5 +326,22 @@ call.enqueue(object: Callback<User> {
 val result = api.getUser()
 val data = result.body()
 ```
+Jawaban: 
 
+```kotlin
+@GET("user")
+suspend fun getUser(): Response<User>
+
+try{
+    val result = api.getUser()
+    if(success..){
+        val data = result.body()
+    }else{
+        //handle
+    }
+
+}catch (e:exception){
+    //handle
+}
+```
 ---
